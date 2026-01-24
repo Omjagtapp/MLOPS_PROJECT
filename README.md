@@ -2,12 +2,8 @@
 
 ![CI](https://github.com/Omjagtapp/MLOPS_PROJECT/actions/workflows/ci.yml/badge.svg)
 
-## What this repo contains
-Milestone 0 setup for Machine Learning Lifecycle Development & Ops (MLOps):
-- Python virtual environment
-- Pinned dependencies for reproducibility
-- Basic import test (`tests/test_imports.py`)
-- GitHub Actions CI to run tests on every push/PR
+## Objective
+Milestone 0 establishes a reproducible development environment and continuous integration (CI) foundation for an MLOps project.
 
 ## Setup (local)
 ```
