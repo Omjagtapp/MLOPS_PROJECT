@@ -103,6 +103,20 @@ README.md               # Project documentation
 requirements.txt        # Pinned dependencies for reproducibility
 ```
 
+###
+```
+## Cloud Run vs Cloud Functions (Gen2) – Deployment Comparison
+
+In this milestone, I deployed the same Iris RandomForest inference model using two serverless approaches: **Cloud Run** and **Cloud Functions (Gen2)**.
+
+**Cloud Run** was used to deploy a containerized FastAPI application built with Docker and stored in Artifact Registry. This approach provides full control over the runtime environment, dependency versions, server configuration, and startup behavior. It closely resembles a production microservice and fits naturally into the deployment stage of the ML lifecycle where scalability, observability, and reproducibility are critical.
+
+**Cloud Functions (Gen2)** was used to deploy a lightweight HTTP-triggered inference endpoint. The model artifact and dependencies are packaged directly with the function source. While Gen2 functions run on Cloud Run internally, the developer experience is simpler and optimized for small, single-purpose endpoints. This approach is faster to deploy but offers less control compared to Cloud Run.
+
+From a **reproducibility and reliability** perspective, both deployments require strict dependency pinning. A scikit-learn version mismatch initially caused runtime warnings, which was resolved by retraining the model under the same version used during deployment. This reinforces the importance of environment consistency across training and serving.
+
+In practice, **Cloud Run** is better suited for production ML services that require fine-grained control and observability, while **Cloud Functions** are ideal for lightweight inference tasks or event-driven ML workflows.
+```
 
 
 
