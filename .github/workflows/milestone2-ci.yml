@@ -3,17 +3,12 @@ name: Milestone 2 - CI (tests + docker build)
 on:
   push:
     branches: ["main"]
+    tags: ["v*"]
   pull_request:
-  push:
-    tags:
-      - "v*"
 
 jobs:
   test-and-build:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: module3/milestone2
 
     steps:
       - uses: actions/checkout@v4
@@ -23,11 +18,18 @@ jobs:
         with:
           python-version: "3.11"
 
+      - name: Show requirements (debug)
+        run: |
+          pwd
+          ls -la
+          echo "---- module3/milestone2/requirements.txt ----"
+          cat module3/milestone2/requirements.txt
+
       - name: Install dependencies
-        run: pip install -r requirements.txt
+        run: pip install -r module3/milestone2/requirements.txt
 
       - name: Run tests
-        run: pytest -q
+        run: pytest -q module3/milestone2/tests
 
-      - name: Docker build (multi-stage)
-        run: docker build -t milestone2-ml -f Dockerfile .
+      - name: Docker build
+        run: docker build -t milestone2-ml -f module3/milestone2/Dockerfile module3/milestone2
