@@ -40,7 +40,7 @@ class PredictionResponse(BaseModel):
 # ----------------------------------------------------
 # Model loading (runs at container startup)
 # ----------------------------------------------------
-MODEL_PATH = Path("model.pkl")
+MODEL_PATH = Path(__file__).resolve().parent / "model.pkl"
 
 logger.info("Loading model from %s", MODEL_PATH.resolve())
 artifact = joblib.load(MODEL_PATH)
