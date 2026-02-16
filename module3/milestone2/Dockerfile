@@ -1,26 +1,34 @@
-# -------- Builder stage --------
+# -------------------------
+# 1) Builder stage
+# -------------------------
 FROM python:3.11-slim AS builder
+
 WORKDIR /build
 
-# Install dependencies first (better caching)
+# Install deps into a portable folder (/install)
 COPY requirements.txt .
-RUN pip install --user --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir --upgrade pip \
+ && pip install --no-cache-dir --prefix=/install -r requirements.txt
 
-# -------- Runtime stage --------
-FROM python:3.11-slim
+# -------------------------
+# 2) Runtime stage (small)
+# -------------------------
+FROM python:3.11-slim AS runtime
+
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1
+
 WORKDIR /app
 
-# Copy installed packages from builder
-COPY --from=builder /root/.local /root/.local
+# Copy installed deps from builder
+COPY --from=builder /install /usr/local
 
-# Copy application code + model
-COPY app/ /app/
+# Copy app artifacts
+COPY app/ /app/app/
+COPY app/app.py /app/app.py
+COPY app/model.pkl /app/model.pkl
 
-# Ensure user-installed binaries are on PATH
-ENV PATH=/root/.local/bin:$PATH
-
-# Cloud Run / many platforms use 8080
 EXPOSE 8080
 
-# Start FastAPI (file: app.py, object: app)
-CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8080"]
+# Cloud Run style
+CMD ["uvicorn", "app.app:app", "--host", "0.0.0.0", "--port", "8080"]

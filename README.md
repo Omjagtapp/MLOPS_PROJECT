@@ -1,6 +1,7 @@
 # MLOps Project – Milestone 0
 
-![CI](https://github.com/Omjagtapp/MLOPS_PROJECT/actions/workflows/ci.yml/badge.svg)
+![CI](https://github.com/Omjagtapp/MLOPS_PROJECT/actions/workflows/build.yml/badge.svg)
+
 
 A reproducible Python development environment for IDS 568, validated using automated CI.
 
